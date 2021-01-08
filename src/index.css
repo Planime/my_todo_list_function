@@ -1,0 +1,130 @@
+* {
+    box-sizing: border-box;
+}
+
+p {
+    margin: 0;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+.form_main {
+    border: 2px solid green;
+    margin: 50px 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_title {
+    color: green;
+}
+
+.form_input {
+    width: 40%;
+    text-align: center;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+
+}
+
+.form_submit {
+    width: 40%;
+    background-color: grey;
+    margin-bottom: 20px;
+    cursor: pointer;
+}
+
+.form_submit:hover {
+    background-color: green;
+}
+
+.task_container {
+    border: green 1px solid;
+    list-style: none;
+    width: 85%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.task_list {
+    display: flex;
+    border: green 1px solid;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 20px;
+}
+
+.buttons_wrapper {
+    margin-left: auto;
+}
+
+.task_list_delete_btn {
+    border-radius: 10px;
+    background-color: #ff8379;
+    cursor: pointer;
+}
+
+.task_list_done_btn {
+    border-radius: 10px;
+    background-color: #6bbe95;
+    cursor: pointer;
+}
+
+.task_list_done_btn:hover {
+
+}
+
+.task_list_delete_btn:hover {
+
+}
+
+.done {
+    background-color: #60be73;
+}
+
+.tabs_wrapper{
+    display: flex;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.tab {
+    flex-grow:  1;
+}
+
+.activeTav{
+    background-color: #4abe8d;
+}
+
+.task_list_edit_btn{
+    border-radius: 10px;
+    background-color: #f4f4f4;
+    cursor: pointer;
+}
+
+.p_list_field{
+    width: 80%;
+}
+
+.editableTask {
+    border: 3px solid red;
+}
+
+.confirmEdit{
+    border-radius: 10px;
+    cursor: pointer;
+}
