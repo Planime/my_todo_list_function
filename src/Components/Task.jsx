@@ -1,4 +1,4 @@
-import React, {Fragment} from "react"
+import React from "react"
 
 
 function Task({
@@ -15,10 +15,10 @@ function Task({
         <li
             data-id={task.id}
             className={`${task.completed ? "task_list done" : "task_list" }
-                                         ${+editableTask === task.id ? "editableTask" : "task_list"}`}
+                                         ${+editableTask === +task.id ? "editableTask" : "task_list"}`}
             >
 
-            {+editableTask === task.id
+            {+editableTask === +task.id
                 ?
                 <input
                     onChange={onChangeEditableTask}
@@ -27,17 +27,17 @@ function Task({
                 :
 
 
-                <p className="p_list_field">{task.inputText}</p>
+                <p className="p_list_field">{task.description}</p>
             }
 
             <div className="buttons_wrapper">
 
-                {+editableTask === task.id
+                {+editableTask === +task.id
                     ?
                     <button data-btn="confirmEdit"
                             className="confirmEdit">Complete</button>
                     :
-                    <Fragment>
+                    <>
                         <button data-btn="delete"
                                 className="task_list_delete_btn">Delete
                         </button>
@@ -49,7 +49,7 @@ function Task({
                             className={"task_list_edit_btn"}
                         >Edit
                         </button>
-                    </Fragment>
+                    </>
                 }
 
             </div>

@@ -1,34 +1,27 @@
-import React, {useState, Fragment, useEffect} from "react"
+import React, {useState, useEffect} from "react"
 import './App.css';
 import Form from "./Components/Form"
 import List from "./Components/List"
 import Tabs from "./Components/Tabs"
 
 
-
-
 function App() {
 
 
-
-
-
-
     // Declare state variables
-    const [taskList, setTaskList] = useState(JSON.parse(localStorage.getItem('taskList')) || []);
+    const [taskList, setTaskList] = useState([]);
     const [currentTab, setCurrentTab] = useState("all");
-    const [inputText, setInputText] = useState('');
+    const [description, setDescription] = useState('');
     const [editableTask, setEditableTask] = useState('');
     const [editableTaskText, setEditableTaskText] = useState('');
 
 
-
-    useEffect(()=>{
-        window.addEventListener("unload", handleUnload);
-        return () => {
-            window.removeEventListener("unload", handleUnload)
-        }
-    });
+    useEffect(() => {
+        fetch("https://5fec128e573752001730b0f1.mockapi.io/todo")
+            .then(response => response.json())
+            .then(tasks => setTaskList(tasks))
+            .catch((error => console.error(error)))
+    }, []);
 
 
     function onclickTaskContainerHandler(e) {
@@ -42,29 +35,58 @@ function App() {
 
         switch (btnAttr) {
             case "edit":
-                setEditableTaskText(taskList.find(task => +task.id === +taskId).inputText);
+                setEditableTaskText(taskList.find(task => task.id === taskId).description);
                 setEditableTask(taskId);
                 break;
             case "confirmEdit":
-                taskList.find(task => +task.id === +taskId).inputText = editableTaskText;
-                setEditableTask(null);
+                const specs = {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        description: editableTaskText
+                    })
+                };
+
+                fetch(`https://5fec128e573752001730b0f1.mockapi.io/todo/${taskId}`, specs)
+                    .then(response => response.json())
+                    .then(response => setTaskList(taskList.map(task => task.id === response.id ?
+                        {
+                            ...task, description: response.description
+                        } : task)))
+                    .then(() => {
+                        setEditableTask(null)
+                        setEditableTaskText("")
+                    });
+
                 break;
 
             case "delete":
-                setTaskList(taskList.filter((task) => {
-                    return task.id !== +taskId
-                }));
+                fetch(`https://5fec128e573752001730b0f1.mockapi.io/todo/${taskId}`, {method: "DELETE"})
+                    .then(response => response.json())
+                    .then(response => setTaskList(taskList.filter(task => task.id !== response.id)));
                 break;
-            case "done":
-                const newList = taskList.map(({id, completed, inputText}) => {
-                    return {
-                        inputText,
-                        id,
-                        completed: id === +taskId ? !completed : completed
-                    }
 
-                });
-                setTaskList(newList);
+            case "done":
+                const completed = taskList.find(task => task.id === taskId).completed;
+                const options = {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({
+                        completed: !completed
+                    })
+
+                };
+                fetch(`https://5fec128e573752001730b0f1.mockapi.io/todo/${taskId}`, options)
+                    .then(response => response.json())
+                    .then(response => setTaskList(taskList.map(task => task.id === response.id ?
+                        {
+                            ...task, completed: response.completed
+                        } : task)))
+
                 break;
         }
 
@@ -94,20 +116,13 @@ function App() {
     }
 
 
-    function handleUnload () {
-        console.log("function unloaded shit")
-        localStorage.setItem("taskList", JSON.stringify(taskList))
-    };
-
-
-
     return (
-        <Fragment>
+        <>
             <Form
                 taskList={taskList}
                 setTaskList={setTaskList}
-                inputText={inputText}
-                setInputText={setInputText}/>
+                description={description}
+                setDescription={setDescription}/>
             <Tabs
                 currentTab={currentTab}
                 onClickTabsHandler={onClickTabsHandler}/>
@@ -120,7 +135,7 @@ function App() {
                 currentTab={currentTab}
                 onclickTaskContainerHandler={onclickTaskContainerHandler}
             />
-        </Fragment>
+        </>
     );
 }
 

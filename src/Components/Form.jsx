@@ -1,42 +1,53 @@
 import React from "react";
 
 
-function Form({setInputText, setTaskList, taskList, inputText}) {
+function Form({setDescription, setTaskList, taskList, description}) {
+
 
     function onchangeInputHandler(event) {
-        setInputText(event.target.value)
+        setDescription(event.target.value)
 
     }
 
     function onSubmitHandler(e) {
         e.preventDefault();
-        setTaskList([
-            {
-                id: Math.random(),
-                completed: false,
-                inputText: inputText || "empty task",
-                isEdit: false
+
+        const options = {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
             },
-            ...taskList
-        ]);
-        setInputText('')
-    }
+            body: JSON.stringify({
+                completed: false,
+                description: description || "empty task"
+            })
+        };
+
+        fetch("https://5fec128e573752001730b0f1.mockapi.io/todo", options)
+            .then(response => response.json())
+            .then(response => {
+                setTaskList([response, ...taskList])
+                setDescription('')
+            })
+            .catch(error => console.error(error))
+
+}
 
 
-    return (
-        <form
-            onSubmit={onSubmitHandler}
-            className="form_main">
-            <h2 className="form_title">To Do List</h2>
-            <input
-                value={inputText}
-                onChange={onchangeInputHandler}
-                className="form_input" type="text"/>
-            <button
-                className="form_submit">Submit
-            </button>
-        </form>
-    )
+return (
+    <form
+        onSubmit={onSubmitHandler}
+        className="form_main">
+        <h2 className="form_title">To Do List</h2>
+        <input
+            value={description}
+            onChange={onchangeInputHandler}
+            className="form_input" type="text"/>
+        <button
+            className="form_submit">Submit
+        </button>
+    </form>
+)
 }
 
 
