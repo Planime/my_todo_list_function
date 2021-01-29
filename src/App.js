@@ -56,7 +56,7 @@ function App() {
                             ...task, description: response.description
                         } : task)))
                     .then(() => {
-                        setEditableTask(null)
+                        setEditableTask(null);
                         setEditableTaskText("")
                     });
 
@@ -99,7 +99,6 @@ function App() {
 
     function onClickTabsHandler(e) {
         let attr = e.target.dataset.tab;
-
 
         if (attr === "all") {
             setCurrentTab("all")

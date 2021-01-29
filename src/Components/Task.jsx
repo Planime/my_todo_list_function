@@ -11,7 +11,6 @@ function Task({
 ) {
 
     return (
-
         <li
             data-id={task.id}
             className={`${task.completed ? "task_list done" : "task_list" }
@@ -51,7 +50,6 @@ function Task({
                         </button>
                     </>
                 }
-
             </div>
         </li>
     )
